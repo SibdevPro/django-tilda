@@ -54,6 +54,8 @@ your location bar when you work with project in Tilda panel)
     TILDA_SECRET_KEY = ''
     TILDA_PROJECTID = ''
     TILDA_MEDIA_IMAGES_URL = '/media/tilda/images'
+    TILDA_MEDIA_JS_URL = '/media/tilda/js'
+    TILDA_MEDIA_CSS_URL = '/media/tilda/css'
     TILDA_MEDIA_IMAGES = os.path.join(BASE_DIR, 'media/tilda/images')
     TILDA_MEDIA_JS = os.path.join(BASE_DIR, 'media/tilda/js')
     TILDA_MEDIA_CSS = os.path.join(BASE_DIR, 'media/tilda/css')
@@ -98,22 +100,7 @@ Simple example:
 
 .. code:: html
 
-    <head>
-        ...
-        {% for css in object.tilda_content.get_css_list %}
-            <link rel="stylesheet" href="{{ css }}">
-        {% endfor %}
-        ...
-    </head>
-
-    <body>
-        ...
-        {{ object.tilda_content.html|safe }}
-        ...
-        {% for js in object.tilda_content.get_js_list %}
-            <script src="{{ js }}"></script>
-        {% endfor %}
-    </body>
+    {{ object.tilda_content.html|safe }}
 
 Localizations
 -------------

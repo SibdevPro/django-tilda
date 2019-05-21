@@ -1,4 +1,5 @@
 import os
+
 import requests
 from django.conf import settings
 from django.utils.timezone import now
@@ -34,7 +35,7 @@ def api_getpageslist():
 
 
 def api_getpageexport(page_id):
-    url = '{}/getpageexport'.format(API_HOST)
+    url = '{}/getpagefullexport'.format(API_HOST)
     page = models.TildaPage.objects.get(id=page_id)
     payload = API_PAYLOAD.copy()
     payload['pageid'] = page.id
@@ -62,22 +63,26 @@ def api_getpageexport(page_id):
             page.css = result['css']
             page.js = result['js']
             page.synchronized = now()
-            page.save()
 
             for r in make_unique(result['images']):
                 filename = os.path.join(settings.TILDA_MEDIA_IMAGES, r['to'])
                 download_file(r['from'], filename)
                 url = os.path.join(settings.TILDA_MEDIA_IMAGES_URL, r['to'])
                 page.html = page.html.replace(r['to'], url)
-            page.save()
 
             for r in make_unique(result['css']):
                 filename = os.path.join(settings.TILDA_MEDIA_CSS, r['to'])
                 download_file(r['from'], filename)
+                url = os.path.join(settings.TILDA_MEDIA_CSS_URL, r['to'])
+                page.html = page.html.replace(r['to'], url)
 
             for r in make_unique(result['js']):
                 filename = os.path.join(settings.TILDA_MEDIA_JS, r['to'])
                 download_file(r['from'], filename)
+                url = os.path.join(settings.TILDA_MEDIA_JS_URL, r['to'])
+                page.html = page.html.replace(r['to'], url)
+
+            page.save()
 
             return True
     return False

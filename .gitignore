@@ -9,3 +9,4 @@ media/
 django_tilda.egg-info/
 local_settings.py
 db.sqlite3
+.idea/
